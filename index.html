@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading Quiz: Text 1 Email (June 2022)</title>
+<style>
+:root{
+  --ink:#172033; --muted:#55627a; --page:#eaeff6; --card:#ffffff; --line:#c7d0df;
+  --navy:#14213d; --blue:#1f4e9c; --blue-soft:#e1ebfb; --green:#17744a; --green-soft:#e2f4ea;
+  --red:#a8281f; --red-soft:#fbe8e6; --amber:#8a5a00; --amber-soft:#fff2d6;
+  --strong:#1f4e9c; --gstrong:#17744a; --rstrong:#a8281f; --serif:Georgia,"Times New Roman",serif; --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ink:#e8edf6; --muted:#a6b2c7; --page:#0f1624; --card:#18223a; --line:#34405d;
+  --navy:#0a1020; --blue:#7fa8f0; --blue-soft:#1f3358; --green:#6fd3a0; --green-soft:#16352a;
+  --red:#f0928a; --red-soft:#3d1d1b; --amber:#f3c66b; --amber-soft:#3a2d10; --strong:#3b6fd1; --gstrong:#1e8a58; --rstrong:#c23a30;}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.5}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.top{background:var(--navy);color:#fff;padding:14px 20px 0}
+.top-row{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.top h1{font-size:1.05rem;font-weight:600;margin:0}
+.counter{font-size:1.05rem;font-weight:700}
+.progress{max-width:1100px;margin:12px auto 0;height:8px;background:rgba(255,255,255,.22);border-radius:4px 4px 0 0;overflow:hidden}
+.progress>div{height:100%;background:#9cc2ff;width:0;transition:width .25s}
+main{max-width:1100px;margin:0 auto;padding:22px 16px 60px}
+.screen[hidden]{display:none}
+.nav-dots{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.dot{width:40px;height:40px;border-radius:6px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700}
+.dot.answered{background:var(--blue-soft);border-color:var(--blue)}
+.dot.current{outline:3px solid var(--blue);outline-offset:1px}
+.layout{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:900px){.layout{grid-template-columns:1.05fr 1fr;align-items:start}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+.panel h2{font-size:1rem;margin:0 0 4px;color:var(--muted);font-weight:600}
+.instr{margin:0 0 14px;font-size:.98rem;color:var(--muted)}
+.email{border:2px solid var(--ink);border-radius:2px;padding:14px 16px;font-family:var(--serif);font-size:1.05rem;line-height:1.6;background:var(--card)}
+.para{display:grid;grid-template-columns:28px 1fr;gap:6px;margin:0 0 12px}
+.para:last-child{margin-bottom:0}
+.pn{font-family:var(--sans);font-weight:700;color:var(--muted);text-align:right;padding-top:1px}
+.qhead{font-size:1.5rem;line-height:1.3;margin:0 0 6px;font-weight:700}
+.qsub{margin:0 0 14px;color:var(--muted)}
+.marks{float:right;font-size:.9rem;color:var(--muted);font-weight:600}
+.options{display:grid;gap:12px;margin:18px 0 0}
+.opt{display:grid;grid-template-columns:48px 1fr;align-items:center;text-align:left;width:100%;padding:0;border:2px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);overflow:hidden}
+.opt .letter{display:flex;align-items:center;justify-content:center;align-self:stretch;font-weight:800;font-size:1.2rem;border-right:2px solid var(--line);background:var(--page)}
+.opt .txt{padding:14px 16px;font-size:1.1rem}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt[aria-checked="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.opt[aria-checked="true"] .letter{background:var(--strong);color:#fff;border-color:var(--strong)}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .letter{background:var(--gstrong);color:#fff;border-color:var(--gstrong)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .letter{background:var(--rstrong);color:#fff;border-color:var(--rstrong)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:16px;padding:14px 16px;border-radius:8px;border-left:6px solid var(--green);background:var(--green-soft)}
+.feedback.bad{border-color:var(--red);background:var(--red-soft)}
+.feedback strong{display:block;margin-bottom:2px}
+.actions{display:flex;justify-content:flex-end;gap:12px;margin-top:22px;flex-wrap:wrap}
+.btn{padding:13px 24px;border-radius:8px;border:2px solid var(--blue);background:var(--card);color:var(--blue);font-weight:700}
+.btn.primary{background:var(--strong);border-color:var(--strong);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.notice{margin-top:18px;padding:14px 16px;border-radius:8px;background:var(--amber-soft);border-left:6px solid var(--amber)}
+.notice .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.start{max-width:720px;margin:20px auto}
+.start h2{font-size:1.8rem;line-height:1.25;margin:0 0 10px}
+.start ul{padding-left:22px}
+.start li{margin:6px 0}
+.check{display:flex;gap:10px;align-items:flex-start;margin:18px 0;padding:12px 14px;border:2px solid var(--line);border-radius:8px;background:var(--card)}
+.check input{width:22px;height:22px;margin-top:3px}
+.score{text-align:center;padding:28px 16px}
+.score .big{font-size:4rem;font-weight:800;line-height:1}
+.score .pct{font-size:1.6rem;font-weight:700;margin-top:6px}
+.meter{height:14px;background:var(--line);border-radius:7px;overflow:hidden;max-width:420px;margin:16px auto 0}
+.meter>div{height:100%;background:var(--green)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+.stat b{display:block;font-size:1.8rem}
+.review{display:grid;gap:14px}
+.ritem{background:var(--card);border:1px solid var(--line);border-left:8px solid var(--line);border-radius:10px;padding:16px 18px}
+.ritem.ok{border-left-color:var(--green)}
+.ritem.no{border-left-color:var(--red)}
+.ritem.skip{border-left-color:var(--amber)}
+.status{font-weight:800}
+.ok .status{color:var(--green)} .no .status{color:var(--red)} .skip .status{color:var(--amber)}
+.ritem p{margin:6px 0}
+.sr{position:absolute;left:-9999px}
+@media(max-width:560px){body{font-size:17px}.panel{padding:16px}.stats{grid-template-columns:1fr}.qhead{font-size:1.3rem}}
+@media(prefers-reduced-motion:reduce){.progress>div{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-row">
+    <h1 id="quizTitle">Reading Quiz: Text 1 Email (June 2022)</h1>
+    <div class="counter" id="counter" aria-live="polite"></div>
+  </div>
+  <div class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressWrap"><div id="progressBar"></div></div>
+</header>
+
+<main>
+  <!-- START -->
+  <section class="screen start" id="screenStart">
+    <h2>Reading quiz: an email about recycling</h2>
+    <p>You will read an email from Roberta to Heidi and answer 6 multiple-choice questions. Each question is worth 1 mark, so the total is 6 marks.</p>
+    <ul>
+      <li>One question appears at a time, next to the part of the email you need.</li>
+      <li>Click an answer to select it. Click another answer to change it.</li>
+      <li>Use <b>Next question</b> to move on. You cannot go back to an earlier question, so check your answer before you continue. If you are unsure, you can skip a question.</li>
+    </ul>
+    <button class="btn primary" id="btnStart">Start quiz</button>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="screenQuiz" hidden>
+    <div class="layout">
+      <article class="panel" id="passagePanel" aria-label="Reading text"></article>
+      <article class="panel" id="questionPanel">
+        <span class="marks" id="qMarks">[1 mark]</span>
+        <h2 id="qLabel"></h2>
+        <p class="qhead" id="qText"></p>
+        <p class="qsub" id="qSub"></p>
+        <div class="options" id="options" role="radiogroup" aria-labelledby="qText"></div>
+        <div id="finishNotice"></div>
+      </article>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="btnNext">Next question</button>
+    </div>
+  </section>
+
+  <!-- FINISHED -->
+  <section class="screen start" id="screenResults" hidden>
+    <div class="panel score">
+      <h2 style="font-size:1.8rem;color:var(--ink);margin:0 0 10px">Quiz complete</h2>
+      <p style="margin:0">You have answered all the questions. Thank you.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+"use strict";
+/* ---------- Quiz content (from the Text 1 Email pages of the exam paper) ---------- */
+var PASSAGES = {
+  p1: {
+    label: "Text 1: Email",
+    instruction: "Read the first part of this email from Roberta to Heidi.",
+    paras: [
+      {n:"", t:"Dear Heidi"},
+      {n:"1", t:"It was great to see you last month. I really enjoyed visiting you and looking around the university. The concert we went to was such fun, wasn\u2019t it? I hope we can go to another concert next time I visit. I will take you out for a meal first!"},
+      {n:"2", t:"My studies are going really well and I gave in my geography project yesterday. I had worked very hard on it. Unfortunately, after that I injured my leg playing in a tennis tournament. I went to the hospital and the doctor said my leg wasn\u2019t broken. I must rest it for a couple of weeks which will make life difficult! I am going to work from home as much as possible."}
+    ]
+  },
+  p2: {
+    label: "Text 1: Email (second part)",
+    instruction: "Read the second part of the email.",
+    paras: [
+      {n:"3", t:"Anyway, next week at college we are starting a recycling programme and I have volunteered to help with the organisation of it. The college president wants us to find as many ways as possible to improve the sustainability of the college including recycling materials. I know that you picked up some good ideas about how to improve recycling from the time when you were studying in the United States."},
+      {n:"4", t:"You also told me that you volunteered for a recycling charity in the summer. Do you think you could send me some of your ideas which we might use? I want to make sure that our college recycles as many items as possible including all glass, paper and cardboard."},
+      {n:"5", t:"Let me know what ideas you have."},
+      {n:"", t:"Thank you and speak to you soon."},
+      {n:"", t:"Roberta"}
+    ]
+  }
+};
+var QUESTIONS = [
+  {passage:"p1", sub:"", text:"What event did they go and see?",
+   options:{A:"A concert", B:"A film", C:"A sporting event"}, answer:"A", marks:1,
+   explain:"Paragraph 1 says \u201CThe concert we went to was such fun\u201D, so the event was a concert."},
+  {passage:"p1", sub:"", text:"How did Roberta hurt her leg?",
+   options:{A:"At the gym", B:"Playing golf", C:"Playing tennis"}, answer:"C", marks:1,
+   explain:"Paragraph 2 says she injured her leg \u201Cplaying in a tennis tournament\u201D."},
+  {passage:"p1", sub:"", text:"What is the main point of paragraph 2?",
+   options:{A:"Roberta is telling Heidi about her injury.", B:"Roberta is explaining what the tennis tournament was like.", C:"Roberta is giving Heidi advice about her geography project."}, answer:"A", marks:1,
+   explain:"Paragraph 2 mentions her studies briefly, then describes the injury, the hospital visit and the doctor\u2019s advice to rest. The tournament itself is not described and she gives no advice about the project."},
+  {passage:"p2", sub:"Read the following statements.", text:"Which statement is correct?",
+   options:{A:"The college president doesn\u2019t agree with recycling.", B:"Heidi has no experience of recycling.", C:"The college is starting a recycling programme."}, answer:"C", marks:1,
+   explain:"Paragraph 3 says \u201Cnext week at college we are starting a recycling programme\u201D. The president wants to improve sustainability (so A is wrong), and Heidi has recycling ideas and volunteered for a recycling charity (so B is wrong)."},
+  {passage:"p2", sub:"", text:"What item is not on Roberta\u2019s list for recycling?",
+   options:{A:"Glass", B:"Metal", C:"Paper"}, answer:"B", marks:1,
+   explain:"Paragraph 4 lists \u201Cglass, paper and cardboard\u201D. Metal is not mentioned."},
+  {passage:"p2", sub:"", text:"What is the main purpose of the email?",
+   options:{A:"Roberta is telling Heidi about how her injury has affected her.", B:"Roberta is asking for ideas to help with her college\u2019s recycling programme.", C:"Roberta is asking Heidi for ideas about how her college can reduce pollution."}, answer:"B", marks:1,
+   explain:"In paragraph 4 Roberta asks Heidi to send ideas that the college might use for its recycling programme. The injury is only background, and pollution is not mentioned."}
+];
+
+/* ---------- State ---------- */
+var state = {i:0, answers:[]};
+var $ = function(id){return document.getElementById(id);};
+var total = QUESTIONS.length;
+var totalMarks = QUESTIONS.reduce(function(s,q){return s+q.marks;},0);
+
+function show(name){
+  ["screenStart","screenQuiz","screenResults"].forEach(function(s){ $(s).hidden = (s!==name); });
+  window.scrollTo(0,0);
+}
+function setProgress(){
+  var answered = state.answers.filter(function(a){return a;}).length;
+  var pct = Math.round(answered/total*100);
+  $("progressBar").style.width = pct+"%";
+  $("progressWrap").setAttribute("aria-valuenow", pct);
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+/* ---------- Render one question ---------- */
+function renderQuestion(){
+  var q = QUESTIONS[state.i], n = state.i+1;
+  $("counter").textContent = "Question "+n+" of "+total;
+  $("finishNotice").innerHTML = "";
+
+  // passage
+  var p = PASSAGES[q.passage];
+  var html = "<h2>"+esc(p.label)+"</h2><p class='instr'>"+esc(p.instruction)+"</p><div class='email'>";
+  p.paras.forEach(function(x){
+    html += "<div class='para'><span class='pn'>"+esc(x.n)+"</span><span>"+esc(x.t)+"</span></div>";
+  });
+  html += "</div>";
+  $("passagePanel").innerHTML = html;
+
+  // question
+  $("qLabel").textContent = "Question "+n;
+  $("qText").textContent = q.text;
+  $("qSub").textContent = q.sub;
+  $("qSub").style.display = q.sub ? "" : "none";
+  $("qMarks").textContent = "["+q.marks+" mark"+(q.marks>1?"s":"")+"]";
+
+  var box = $("options"); box.innerHTML = "";
+  Object.keys(q.options).forEach(function(L){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt";
+    b.setAttribute("role","radio");
+    var chosen = state.answers[state.i]===L;
+    b.setAttribute("aria-checked", chosen ? "true":"false");
+    b.innerHTML = "<span class='letter'>"+L+"</span><span class='txt'>"+esc(q.options[L])+"</span>";
+    b.onclick = function(){ choose(L); };
+    box.appendChild(b);
+  });
+
+  $("btnNext").textContent = (state.i===total-1) ? "Finish quiz" : "Next question";
+  setProgress();
+}
+
+function choose(L){
+  state.answers[state.i] = L;
+  renderQuestion();
+}
+
+/* ---------- Navigation ---------- */
+function next(){
+  if(state.i < total-1){ state.i++; renderQuestion(); return; }
+  var unanswered = QUESTIONS.filter(function(_,k){return !state.answers[k];}).length;
+  if(unanswered>0){
+    $("finishNotice").innerHTML =
+      "<div class='notice' role='alert'><b>You have "+unanswered+" unanswered question"+(unanswered>1?"s":"")+".</b> Unanswered questions score 0 marks."+
+      "<div class='row'><button class='btn' id='btnBack'>Stay on this question</button><button class='btn primary' id='btnForce'>Finish anyway</button></div></div>";
+    $("btnBack").onclick = function(){ $("finishNotice").innerHTML = ""; };
+    $("btnForce").onclick = showResults;
+    $("finishNotice").scrollIntoView({block:"nearest"});
+  } else { showResults(); }
+}
+
+/* ---------- Finish ---------- */
+function showResults(){
+  $("counter").textContent = "Finished";
+  $("progressBar").style.width = "100%";
+  show("screenResults");
+}
+
+/* ---------- Start ---------- */
+function start(){
+  state.i = 0; state.answers = [];
+  show("screenQuiz"); renderQuestion();
+}
+$("btnStart").onclick = start;
+$("btnNext").onclick = next;
+document.addEventListener("keydown", function(e){
+  if($("screenQuiz").hidden) return;
+  var q = QUESTIONS[state.i], k = e.key.toUpperCase();
+  if(q.options[k] && !e.ctrlKey && !e.metaKey && !e.altKey && document.activeElement.tagName!=="INPUT"){ choose(k); }
+});
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"202a9515077940dc910f4b3e99b8c83c","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
